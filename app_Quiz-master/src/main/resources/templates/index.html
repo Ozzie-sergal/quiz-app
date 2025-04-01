@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Strona główna</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h1>Witaj w aplikacji do nauki!</h1>
+<p>To jest podstawowa strona główna.</p>
+
+<!-- Linki do innych stron -->
+<a href="/login">Zaloguj się</a> | <a href="/register">Zarejestruj się</a>
+
+<!-- Przykład użycia Thymeleaf -->
+<p th:text="'Witaj, ' + ${username} + '!'"></p>
+</body>
+</html>

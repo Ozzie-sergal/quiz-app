@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning App</title>
+  <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="quizzes.html">Quizzes</a></li>
+      <li><a href="progress.html">Progress</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Main Content Section -->
+<main>
+  <!-- Homepage Content -->
+  <section id="home">
+    <h1>Welcome to Your Learning Journey!</h1>
+    <p>Start learning new topics and improve your skills.</p>
+  </section>
+
+  <!-- Lessons Section -->
+  <section id="lessons">
+    <h2>Available Lessons</h2>
+    <ul id="lesson-list">
+      <!-- Dynamically populated from backend -->
+    </ul>
+  </section>
+
+  <!-- Quiz Section -->
+  <section id="quiz">
+    <h2>Take a Quiz</h2>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </section>
+</main>
+
+<!-- Footer Section -->
+<footer>
+  <p>&copy; 2025 Learning App. All rights reserved.</p>
+</footer>
+
+<script src="../static/js/script.js"></script>
+</body>
+</html>
