@@ -5,58 +5,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quizzes - Learning App</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
         body {
-            background: url('/images/background.jpg') no-repeat center center fixed;
+            background: url('../images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            color: #fff;
         }
         main {
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        .quiz-box {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            max-width: 600px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
         footer {
-            position: relative;
+            position: absolute;
             bottom: 0;
             width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+        #quizSection {
+            display: none;
+        }
+        .correct {
+            background-color: #28a745;
+        }
+        .incorrect {
+            background-color: #dc3545;
+        }
+        .input-field {
+            width: 70%;
+            margin: 10px 0;
+        }
+        .list-group-item {
+            font-size: 18px;
         }
     </style>
 </head>
-    <body>
+<body>
 
-        <!-- Navbar -->
-        <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<!-- Navbar -->
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
-            <!-- Main Content -->
-            <main class="container text-center mt-5">
-                <div class="quiz-box">
-                    <h1>Available Quizzes</h1>
-                    <p>Select a quiz and test your knowledge!</p>
-                    <ul id="quiz-list" class="list-group mt-3">
-                        <!-- Dynamically populated quiz list -->
-                    </ul>
-                </div>
-            </main>
+<!-- Main Content -->
+<main class="container text-center mt-5">
+    <div class="card shadow-lg p-4 bg-light rounded">
+        <h1 class="mb-4">Available Quizzes</h1>
+        <p>Test your knowledge and track your progress.</p>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <button class="btn btn-primary w-100 p-3"><i class="fas fa-square-root-alt"></i> Math</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-success w-100 p-3" onclick="startCountryQuiz()"><i class="fas fa-globe"></i> Geography</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-warning w-100 p-3"><i class="fas fa-language"></i> English</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-danger w-100 p-3"><i class="fas fa-flask"></i> Science</button>
+            </div>
+        </div>
+    </div>
+</main>
 
-        <!-- Footer -->
-        <footer th:replace="~{fragments/footer :: footer}" class="bg-dark text-white text-center py-3 mt-5"></footer>
+<!-- Quiz Section -->
+<div id="quizSection" class="container text-center mt-5">
+    <h2>Guess the Countries of Europe!</h2>
+    <p>Time left: <span id="timer">60</span> seconds</p>
+    <p>Countries guessed: <span id="countriesGuessed">0</span> / 44</p>
+    <input type="text" id="countryInput" class="form-control text-center input-field" placeholder="Type country name">
+    <ul id="countryList" class="list-group mt-4"></ul>
+    <button id="restartButton" class="btn btn-danger mt-3" onclick="restartGame()">Restart</button>
+    <button id="stopButton" class="btn btn-secondary mt-3" onclick="stopGame()">Stop</button>
+</div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/script.js"></script>
-    </body>
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 Learning App. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // List of all European countries (corrected)
+    const europeanCountries = [
+        "albania", "andora", "armenia", "azerbejdżan", "białoruś", "belgia", "bośnia i hercegowina", "bułgaria", "chorwacja", "cypr",
+        "czarnogóra", "czechy", "dania", "estonia", "finlandia", "francja", "georgia", "holandia", "irlandia", "islandia", "kazachstan",
+        "kosowo", "litwa", "luksemburg", "macedonia", "malta", "mołdawia", "monako", "niemcy", "norwegia", "portugalia", "rosja",
+        "rumunia", "serbia", "słowacja", "słowenia", "szwajcaria", "szwecja", "węgry", "wielka brytania", "włochy", "watykan", "turcja",
+        "ukraina", "węgry", "polska"
+    ];
+
+    let guessedCountries = [];
+    let timeLeft = 60;
+    let timer;
+    let isGameRunning = false;
+
+    // Event listener for country input
+    document.getElementById("countryInput").addEventListener("input", function () {
+        let input = this.value.trim().toLowerCase().replace(/ą/g, "a").replace(/ć/g, "c").replace(/ę/g, "e")
+            .replace(/ł/g, "l").replace(/ń/g, "n").replace(/ó/g, "o").replace(/ś/g, "s").replace(/ź/g, "z").replace(/ż/g, "z");
+
+        if (input === "" || guessedCountries.includes(input)) return;
+
+        if (europeanCountries.includes(input)) {
+            guessedCountries.push(input);
+            document.getElementById("countryList").innerHTML += `<li class="list-group-item">${input.charAt(0).toUpperCase() + input.slice(1)}</li>`;
+
+            // Update countries guessed
+            document.getElementById("countriesGuessed").textContent = guessedCountries.length;
+
+            // Add time bonus
+            timeLeft += 5;
+
+            this.value = ""; // Clear input field
+        }
+    });
+
+    // Start the quiz timer
+    function startTimer() {
+        isGameRunning = true;
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert("Time's up! You guessed " + guessedCountries.length + " countries.");
+                stopGame();
+            }
+        }, 1000);
+    }
+
+    // Start the country quiz
+    function startCountryQuiz() {
+        if (isGameRunning) return; // Prevent starting if game is already running
+
+        document.querySelector("main").style.display = "none"; // Hide the main page content
+        document.getElementById("quizSection").style.display = "block"; // Show the quiz section
+        guessedCountries = [];
+        document.getElementById("countryList").innerHTML = "";
+        document.getElementById("countriesGuessed").textContent = "0";
+        timeLeft = 60;
+        document.getElementById("timer").textContent = timeLeft;
+        startTimer(); // Start the countdown
+    }
+
+    // Stop the game
+    function stopGame() {
+        isGameRunning = false;
+        clearInterval(timer);
+        alert("Game stopped! You guessed " + guessedCountries.length + " countries.");
+        document.getElementById("quizSection").style.display = "none"; // Hide quiz
+        document.querySelector("main").style.display = "block"; // Show main page
+    }
+
+    // Restart the game
+    function restartGame() {
+        clearInterval(timer);
+        guessedCountries = [];
+        document.getElementById("countryList").innerHTML = "";
+        document.getElementById("countriesGuessed").textContent = "0";
+        document.getElementById("countryInput").value = "";
+        timeLeft = 60;
+        document.getElementById("timer").textContent = timeLeft;
+        startTimer();
+    }
+</script>
+</body>
 </html>

@@ -4,37 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quizzes - Learning App</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<!-- Header Section -->
-<header>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="quizzes.html">Quizzes</a></li>
-            <li><a href="progress.html">Progress</a></li>
-            <li><a href="profile.html">Profile</a></li>
-        </ul>
-    </nav>
-</header>
+<!-- Navbar -->
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 
-<!-- Main Content Section -->
-<main>
-    <section id="quizzes">
-        <h1>Available Quizzes</h1>
-        <ul id="quiz-list">
-            <!-- Dynamically populated quiz list -->
-        </ul>
-    </section>
+<!-- Main Content -->
+<main class="container text-center mt-5">
+    <div class="card shadow-lg p-4 bg-light rounded">
+        <h1 class="mb-4">Available Quizzes</h1>
+        <p>Test your knowledge and track your progress.</p>
+        <div class="row g-3">
+            <div class="col-md-3">
+                <button class="btn btn-primary w-100 p-3"><i class="fas fa-square-root-alt"></i> Math</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-success w-100 p-3"><i class="fas fa-globe"></i> Geography</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-warning w-100 p-3"><i class="fas fa-language"></i> English</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-danger w-100 p-3"><i class="fas fa-flask"></i> Science</button>
+            </div>
+        </div>
+    </div>
 </main>
 
-<!-- Footer Section -->
-<footer>
-    <p>&copy; 2025 Learning App. All rights reserved.</p>
-</footer>
+<!-- Footer -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg-dark text-white text-center py-3 mt-5"></footer>
 
-<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../static/js/script.js"></script>
 </body>
 </html>

@@ -10,7 +10,25 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/quizzes}">Quizzes</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/progress}">Progress</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/profile}">Profile</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/login}">Login</a></li>
+                <li th:if="${not #authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">Login</a>
+                </li>
+
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <span class="nav-link">Hello, <span th:text="${#authentication.name}">User</span></span>
+                </li>
+
+                <li th:if="${#authorization.expression('isAuthenticated()')}" class="nav-item">
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="nav-link btn btn-link" style="padding: 0; border: none; background: none; color: inherit;">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+
+
+
+
 
             </ul>
         </div>

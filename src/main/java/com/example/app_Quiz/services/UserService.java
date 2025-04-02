@@ -16,6 +16,7 @@ public class UserService {
 
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRule("Student");
         return userRepository.save(user);
     }
 
